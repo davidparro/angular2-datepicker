@@ -1,0 +1,164 @@
+$cloud: white;
+$base: 5px;
+$dayBase: 30px;
+$concrete: 'rgb(255,0,0)';
+$seafoam: teal;
+$white: white;
+$teal: teal;
+$light-blue-grey: grey;
+
+button{
+    border: 0;
+    background: none;
+    cursor: pointer;
+    &:hover{
+        outline: none;
+        background-color: rgba(0, 135, 168, 0.5);
+    }
+    &:focus{
+        outline: none;
+    }
+}
+
+input[readonly] {
+    cursor: pointer;
+}
+
+.calendar {
+    display: block;
+    width: $dayBase * 7;
+    margin: 0 auto;
+    position: absolute;
+    z-index: 3000;
+    border: 1px solid #0087A8;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .calendar-navs {
+        background-color: $cloud;
+    }
+
+    .month-nav {
+        padding: $base;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .year-nav {
+        padding: $base;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .month-grid {
+        background-color: white;
+
+        .day-names {
+            background-color: #0087A8;
+            color: white;
+            display: flex;
+            flex-direction: row;
+            background: $concrete;
+        }
+        .weeks {
+            display: flex;
+            flex-direction: column;
+        }
+        .week {
+            display: flex;
+            flex-direction: row;
+        }
+        .week-date,
+        .day-name {
+            text-align: center;
+            padding: $base;
+            display: block;
+            width: $dayBase;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .week-date {
+            height: $dayBase;
+            position: relative;
+
+            .date-text {
+                z-index: 10;
+                font-size: 12px;
+                font-family: 'Montserrat', sans-serif;
+            }
+
+            &::after {
+                content: '';
+                height: $dayBase * 0.9;
+                width: $dayBase * 0.9;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                //border-radius: 50%;
+                transition: background-color 150ms linear, color 150ms linear;
+                z-index: 1;
+            }
+
+            &.enabled {
+                cursor: pointer;
+                &:hover {
+                    &:after {
+                        background-color: rgba($teal, .5);
+                    }
+                }
+            }
+            &.selected {
+                    color: $white;
+                &:after {
+                    background-color: $teal;
+                }
+                &:hover {
+                    &:after {
+                        background-color: rgba($teal, .5);
+                    }
+                }
+            }
+
+            &.disabled {
+                color: $light-blue-grey;
+                background-color: #d2d2d2;
+            }
+        }
+
+        .today {
+            font-weight: bold;
+            background-color: rgba(0, 135, 168, 0.4);
+        }
+    }
+} 
+
+.hide{
+    display: none;
+}
+.left{
+    left: 0;
+}
+.right{
+    right: 0;
+}
+
+.reset-date{
+    cursor: pointer;
+    background-color: #a94442;
+    color: white;
+    min-height: 34px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    &:hover{
+        background-color: indianred;
+    }
+}
