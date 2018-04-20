@@ -20,6 +20,10 @@ button{
     }
 }
 
+input[readonly] {
+    cursor: pointer;
+}
+
 .calendar {
     display: block;
     width: $dayBase * 7;
@@ -60,8 +64,6 @@ button{
             display: flex;
             flex-direction: row;
             background: $concrete;
-            border-bottom-right-radius: 3px;
-            border-bottom-left-radius: 3px;
         }
         .weeks {
             display: flex;
@@ -100,7 +102,7 @@ button{
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
-                border-radius: 50%;
+                //border-radius: 50%;
                 transition: background-color 150ms linear, color 150ms linear;
                 z-index: 1;
             }
@@ -109,7 +111,7 @@ button{
                 cursor: pointer;
                 &:hover {
                     &:after {
-                        background-color: $seafoam;
+                        background-color: rgba($teal, .5);
                     }
                 }
             }
@@ -120,19 +122,20 @@ button{
                 }
                 &:hover {
                     &:after {
-                        background-color: $teal;
+                        background-color: rgba($teal, .5);
                     }
                 }
             }
 
             &.disabled {
                 color: $light-blue-grey;
+                background-color: #d2d2d2;
             }
         }
 
         .today {
             font-weight: bold;
-            background-color: rgba(0, 135, 168, 0.5);
+            background-color: rgba(0, 135, 168, 0.4);
         }
     }
 } 
@@ -145,4 +148,17 @@ button{
 }
 .right{
     right: 0;
+}
+
+.reset-date{
+    cursor: pointer;
+    background-color: #a94442;
+    color: white;
+    min-height: 34px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    &:hover{
+        background-color: indianred;
+    }
 }

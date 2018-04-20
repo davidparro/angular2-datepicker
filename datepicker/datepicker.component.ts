@@ -15,7 +15,7 @@ export interface CalendarDate {
     styleUrls: ['./datepicker.component.scss']
 })
 export class DatepickerComponent implements OnInit, OnChanges {
-    currentDate = moment();
+    currentDate = moment.utc().set({hour: 0, minute: 0, second: 0, millisecond: 0}).locale('en-gb');
     dayNames = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
     weeks: CalendarDate[][] = [];
     sortedDates: CalendarDate[] = [];
@@ -25,6 +25,7 @@ export class DatepickerComponent implements OnInit, OnChanges {
     @Input('multiple') multiple? = false;
     @Input('label') label? = 'Select a date';
     @Input('align') align? = 'left';
+    @Input('showReset') showReset? = 'true';
     // formControl: FormControl = new FormControl();
     @Output() isSelectDate = new EventEmitter<CalendarDate>();
 
@@ -76,6 +77,7 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
     selectDate(date: CalendarDate): void {
         if (this.multiple) {
+            // code for future implementation
         } else {
             if (!this.isSelected(date.mDate)) {
                 date.selected = !date.selected;
@@ -143,8 +145,18 @@ export class DatepickerComponent implements OnInit, OnChanges {
     }
 
     fillDates(currentMoment: moment.Moment): CalendarDate[] {
-        const firstOfMonth = currentMoment.clone().startOf('month').startOf('isoWeek');
-        const firstDayOfGrid = currentMoment.clone().startOf('month').subtract(firstOfMonth.date(), 'days');
+        currentMoment = currentMoment.utc().set({hour: 0, minute: 0, second: 0, millisecond: 0}).locale('en-gb');
+        const firstOfMonth = currentMoment.utc().set(
+            {hour: 0, minute: 0, second: 0, millisecond: 0}
+        ).locale('en-gb').clone().startOf('month').startOf('isoWeek');
+        let firstDayOfGrid;
+        if (firstOfMonth.date() === 1) {
+            firstDayOfGrid = firstOfMonth;
+        } else {
+            firstDayOfGrid = currentMoment.utc().set(
+                {hour: 0, minute: 0, second: 0, millisecond: 0}
+            ).locale('en-gb').clone().startOf('month').subtract(firstOfMonth.date(), 'days');
+        }
         const start = firstOfMonth.date();
         return _.range(start, start + 42)
                 .map((date: number): CalendarDate => {
@@ -157,9 +169,21 @@ export class DatepickerComponent implements OnInit, OnChanges {
                 });
     }
 
-    toggleCalendar() {
+    toggleCalendar(event) {
+        this.stopProp(event);
         setTimeout(() => {
-            this.calendar.nativeElement.classList.toggle('hide');
+            const listas = document.getElementsByClassName('calendar');
+            for (let index = 0; index < listas.length; index++) {
+                const element = listas[index];
+                if (!element.classList.contains('hide') && element !== this.calendar.nativeElement) {
+                    element.classList.add('hide');
+                }
+            }
+            if (this.calendar.nativeElement.classList.contains('hide')) {
+                this.calendar.nativeElement.classList.remove('hide');
+            } else {
+                this.calendar.nativeElement.classList.add('hide');
+            }
         });
     }
 
@@ -171,5 +195,18 @@ export class DatepickerComponent implements OnInit, OnChanges {
             event.stopImmediatePropagation();
             event.stopPropagation();
         }
+    }
+
+    displayDay(day) {
+        console.log(day);
+    }
+
+    resetDate() {
+        this.selectedDates.forEach(element => {
+            element.selected = false;
+        });
+        this.selectedDates.length = 0;
+        this.datepickerForm['controls'].date.reset();
+        this.isSelectDate.emit(null);
     }
 }

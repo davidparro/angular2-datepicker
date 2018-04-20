@@ -1,6 +1,6 @@
 
 <label [formGroup]="datepickerForm" class="w100"><span>{{label}}</span>
-    <input placeholder="aaaa-mm-dd" (click)="toggleCalendar()" class="form-control" formControlName="date" type="text" readonly>
+    <input placeholder="aaaa-mm-dd" (click)="toggleCalendar($event)" class="form-control" formControlName="date" type="text" readonly>
 </label>
 <div class="calendar hide" #calendar (click)="stopProp($event)">
     <div class="calendar-navs">
@@ -24,7 +24,7 @@
         <div class="weeks">
             <div *ngFor="let week of weeks" class="week">
             <ng-container *ngFor="let day of week">
-                <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
+                <div class="week-date disabled" (click)="displayDay(day)" *ngIf="!isSelectedMonth(day.mDate)">
                 <span class="date-text">{{ day.mDate.date() }}</span>
                 </div>
                 <div class="week-date enabled"
@@ -36,5 +36,10 @@
             </ng-container>
             </div>
         </div>
+    </div>
+    <div *ngIf="showReset" class="reset-date" (click)="resetDate()">
+        <span>
+            RESET
+        </span>
     </div>
 </div>
