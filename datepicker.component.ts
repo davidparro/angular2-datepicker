@@ -1,10 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import * as moment from 'moment';
+import * as moment_ from 'moment';
 import * as _ from 'lodash';
 import { FormControlName, FormControl, FormBuilder } from '@angular/forms';
+const moment = moment_;
 
 export interface CalendarDate {
-    mDate: moment.Moment;
+    mDate: moment_.Moment;
     selected?: boolean;
     today?: boolean;
 }
@@ -61,17 +62,17 @@ export class DatepickerComponent implements OnInit, OnChanges {
         }
     }
 
-    isToday(date: moment.Moment): boolean {
+    isToday(date: moment_.Moment): boolean {
         return moment().isSame(moment(date), 'day');
     }
 
-    isSelected(date: moment.Moment): boolean {
+    isSelected(date: moment_.Moment): boolean {
         return _.findIndex(this.selectedDates, (selectedDate) => {
           return moment(date).isSame(selectedDate.mDate, 'day');
         }) > -1;
     }
 
-    isSelectedMonth(date: moment.Moment): boolean {
+    isSelectedMonth(date: moment_.Moment): boolean {
         return moment(date).isSame(this.currentDate, 'month');
     }
 
@@ -144,7 +145,7 @@ export class DatepickerComponent implements OnInit, OnChanges {
         this.weeks = weeks;
     }
 
-    fillDates(currentMoment: moment.Moment): CalendarDate[] {
+    fillDates(currentMoment: moment_.Moment): CalendarDate[] {
         currentMoment = currentMoment.utc().set({hour: 0, minute: 0, second: 0, millisecond: 0}).locale('en-gb');
         const firstOfMonth = currentMoment.utc().set(
             {hour: 0, minute: 0, second: 0, millisecond: 0}
